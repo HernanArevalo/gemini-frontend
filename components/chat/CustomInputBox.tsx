@@ -1,8 +1,11 @@
-import { Button, Input, Layout } from '@ui-kitten/components';
+import { useState } from 'react';
 import { KeyboardAvoidingView, Platform } from 'react-native';
 
-import { useThemeColor } from '@/hooks/useThemeColor';
+import { Button, Input, Layout } from '@ui-kitten/components';
 import Ionicons from '@expo/vector-icons/Ionicons';
+
+import { useThemeColor } from '@/hooks/useThemeColor';
+
 interface Props {
   attachments?: any[];
   onSendMessage: (message: string, attachments?: any[]) => void;
@@ -11,6 +14,15 @@ interface Props {
 const CustomInputBox = ({ attachments = [], onSendMessage }: Props) => {
   const isAndroid = Platform.OS === 'android';
   const iconColor = useThemeColor({}, 'icon');
+
+  const [text, setText] = useState('')
+
+  const handleSendMessage = () => {
+    if (text.trim() === '' && attachments.length === 0) return;
+
+    onSendMessage(text.trim(), attachments);
+    setText('');
+  };
 
   return (
     <KeyboardAvoidingView
@@ -51,8 +63,11 @@ const CustomInputBox = ({ attachments = [], onSendMessage }: Props) => {
           multiline
           numberOfLines={4}
           style={{ flex: 1 }}
+          value={text}
+          onChangeText={ setText }
         />
         <Button
+          onPress={ handleSendMessage }
           appearance="ghost"
           accessoryRight={
             <Ionicons name="paper-plane-outline" size={22} color={iconColor} />
