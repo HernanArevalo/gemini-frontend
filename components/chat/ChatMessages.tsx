@@ -1,6 +1,7 @@
 import { Layout, List, Text } from '@ui-kitten/components';
 import { Fragment } from 'react';
 import { Image } from 'react-native';
+import Markdown from 'react-native-markdown-display';
 
 import { useThemeColor } from '@/hooks/useThemeColor';
 import {
@@ -68,7 +69,9 @@ const MessageItem = ({
       }}
     >
       <Text style={{ color: isCurrentUser ? 'white' : 'black' }}>
-        {message.text}
+        <Markdown>
+          {message.text}
+        </Markdown>
       </Text>
     </Layout>
   );
