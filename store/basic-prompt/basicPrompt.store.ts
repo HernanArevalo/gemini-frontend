@@ -29,7 +29,6 @@ export const useBasicPromptStore = create<BasicPromptState>()((set) => ({
 
     addMessage: async(text) => {
 
-        console.log('user message', text)
         const userMessage = createMessage(text, 'user')
         set((state) => ({ 
             geminiWriting: true,
@@ -38,7 +37,6 @@ export const useBasicPromptStore = create<BasicPromptState>()((set) => ({
         
         // * GEMINI PETITION
         const geminiResponseText = await GeminiActions.getBasicPrompt(text)
-        console.log('gemini response:', geminiResponseText)
         
         const geminiMessage = createMessage(geminiResponseText, 'gemini')
         set((state) => ({ 
