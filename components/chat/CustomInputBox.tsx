@@ -18,9 +18,11 @@ const CustomInputBox = ({ attachments = [], onSendMessage }: Props) => {
   const [text, setText] = useState('')
 
   const handleSendMessage = () => {
-    if (text.trim() === '' && attachments.length === 0) return;
+    const cleanText = text.replace(/\n$/, '').trim();
 
-    onSendMessage(text.trim(), attachments);
+    if (cleanText === '' && attachments.length === 0) return;
+
+    onSendMessage(cleanText, attachments);
     setText('');
   };
 
@@ -61,13 +63,18 @@ const CustomInputBox = ({ attachments = [], onSendMessage }: Props) => {
         <Input
           placeholder="Escribe tu mensaje"
           multiline
-          numberOfLines={4}
+          returnKeyType="send"
           style={{ flex: 1 }}
           value={text}
-          onChangeText={ setText }
+          onChangeText={setText}
+          onKeyPress={({ nativeEvent }) => {
+            if (nativeEvent.key === 'Enter') {
+              handleSendMessage();
+            }
+          }}
         />
         <Button
-          onPress={ handleSendMessage }
+          onPress={handleSendMessage}
           appearance="ghost"
           accessoryRight={
             <Ionicons name="paper-plane-outline" size={22} color={iconColor} />
